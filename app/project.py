@@ -3,9 +3,16 @@ from random import randint
 
 app = FastAPI()
 
-@app.get("/percentage")
-async def get_random_percentage():
-    return {'percentage': randint(0, 100)}
+kpop_songs = {"0": {
+    "song": "Shut Down",
+    "artist": "Blackpink",
+    "album": "Born Pink",
+    "release_date": "2022"
+}}
+
+@app.get("/kpop")
+async def get_kpop_songs():
+    return kpop_songs
 
 @app.get("/percentage/{lower_limit}/{upper_limit}")
 async def get_random_percentage1(lower_limit: int, upper_limit: int):
