@@ -4,6 +4,7 @@ from random import randint
 
 app = FastAPI()
 
+
 class KpopSong(BaseModel):
     song: str
     artist: str
