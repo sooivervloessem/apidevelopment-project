@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Path
 from pydantic import BaseModel
 from random import randint
 
@@ -42,11 +42,11 @@ async def get_random_kpop_song():
 
 
 @app.get("/kpop/{id}")
-async def get_kpop_song_by_id(id: int):
-    if id >= len(kpop_songs):
-        return {'error': 'There is no song matching that id.'}
-    if id < 0:
-        return {'error': 'Id cannot be less than 0.'}
+async def get_kpop_song_by_id(*, id: int = Path(title="The ID of the song to get", ge=0, lt=len(kpop_songs))):
+    # if id >= len(kpop_songs):
+     #   return {'error': 'There is no song matching that id.'}
+    #if id < 0:
+     #   return {'error': 'Id cannot be less than 0.'}
     return kpop_songs[str(id)]
 
 
@@ -54,4 +54,3 @@ async def get_kpop_song_by_id(id: int):
 async def create_kpop_song(kpop_song: KpopSong):
     kpop_songs[str(len(kpop_songs))] = kpop_song
     return kpop_song
-
