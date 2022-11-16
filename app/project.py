@@ -1,8 +1,24 @@
 from fastapi import FastAPI, Path
 from pydantic import BaseModel
 from random import randint
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+origins = [
+    "http://localhost",
+    "http://localhost:8080",
+    "https://localhost.tiangolo.com",
+    "http://127.0.0.1:5500"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 class KpopSong(BaseModel):
@@ -13,11 +29,11 @@ class KpopSong(BaseModel):
 
 
 kpop_songs = {"0": {
-        "song": "Shut Down",
-        "artist": "Blackpink",
-        "album": "Born Pink",
-        "release_date": "2022"
-    },
+    "song": "Shut Down",
+    "artist": "Blackpink",
+    "album": "Born Pink",
+    "release_date": "2022"
+},
     "1": {
         "song": "After Like",
         "artist": "IVE",
@@ -42,11 +58,12 @@ async def get_random_kpop_song():
 
 
 @app.get("/kpop/{id}")
-async def get_kpop_song_by_id(*, id: int = Path(title="The ID of the song to get", ge=0, lt=len(kpop_songs))):
-    # if id >= len(kpop_songs):
-     #   return {'error': 'There is no song matching that id.'}
-    #if id < 0:
-     #   return {'error': 'Id cannot be less than 0.'}
+async def get_kpop_song_by_id(id: int):
+    # async def get_kpop_song_by_id(*, id: int = Path(title="The ID of the song to get", ge=0, lt=len(kpop_songs))):
+    if id >= len(kpop_songs):
+        return {'error': 'There is no song matching that id.'}
+    if id < 0:
+        return {'error': 'Id cannot be less than 0.'}
     return kpop_songs[str(id)]
 
 

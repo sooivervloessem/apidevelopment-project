@@ -1,8 +1,59 @@
 <html>
+
 <head>
-    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.5.0/dist/cdn.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-    <h1 x-data="{ message: 'I ❤️ Alpine' }" x-text="message"></h1>
+    <div class="row">
+        <h1 class="col-12">Kpop Song API</h1>
+        <div class="col-4" id="random_song" x-data="{
+            responsedata: null,
+            async get_random_kpop_song() {
+                this.responsedata = await (await fetch('http://localhost:8000/kpop/random')).json();
+            }
+        }">
+            <h2>Random Kpop Song</h2>
+            <button type="button" class="btn btn-primary" x-on:click="get_random_kpop_song()">Random Kpop Song</button>
+            <div class="return_data">
+                Random song: <strong x-text="responsedata.song">Placeholder</strong>
+            </div>
+        </div>
+        <div class="col-4" id="entire_database" x-data="{
+            responsedata: null,
+            async get_kpop_songs() {
+                this.responsedata = await (await fetch('http://localhost:8000/kpop')).json();
+            }
+        }">
+            <h2>View entire database</h2>
+            <button type="button" class="btn btn-primary" x-on:click="get_kpop_songs()">View entire database</button>
+            <div class="return_data">
+                Entire database: <strong x-text="responsedata[1].song">Placeholder</strong>
+            </div>
+        </div>
+        <div class="col-4" id="song_by_id" x-data="{
+            responsedata: null,
+            async get_kpop_song_by_id(id) {
+                this.responsedata = await (await fetch(http://localhost:8000/kpop/{id})).json();
+            }
+        }">
+            <h2>Search song by id</h2>
+
+            <form>
+                <div class="mb-3 mx-3">
+                    <input class="form-control" id="idInput" name="id">
+                </div>
+                <button type="submit" class="btn btn-primary" x-on:click="get_kpop_song_by_id()">Submit</button>
+            </form>
+
+            <div class="return_data">
+                Song: <strong x-text="responsedata.song">Placeholder</strong>
+            </div>
+        </div>
+    </div>
+
 </body>
+
 </html>
