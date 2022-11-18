@@ -9,50 +9,179 @@
 <body>
     <div class="row">
         <h1 class="col-12">Kpop Song API</h1>
-        <div class="col-4" id="random_song" x-data="{
+        <hr>
+
+        <div class="col-6" id="random_song" x-data="{
             responsedata: null,
             async get_random_kpop_song() {
                 this.responsedata = await (await fetch('http://localhost:8000/kpop/random')).json();
+                
+                if(this.responsedata.album == null){
+                    this.responsedata.album = 'Unknown';
+                };
+                
+                if(this.responsedata.release_date == null){
+                    this.responsedata.release_date = 'Unknown';
+                };
             }
         }">
-            <h2>Random Kpop Song</h2>
-            <button type="button" class="btn btn-primary" x-on:click="get_random_kpop_song()">Random Kpop Song</button>
-            <div class="return_data">
-                Random song: <strong x-text="responsedata.song">Placeholder</strong>
-            </div>
-        </div>
-        <div class="col-4" id="entire_database" x-data="{
-            responsedata: null,
-            async get_kpop_songs() {
-                this.responsedata = await (await fetch('http://localhost:8000/kpop')).json();
-            }
-        }">
-            <h2>View entire database</h2>
-            <button type="button" class="btn btn-primary" x-on:click="get_kpop_songs()">View entire database</button>
-            <div class="return_data">
-                Entire database: <strong x-text="responsedata[1].song">Placeholder</strong>
-            </div>
-        </div>
-        <div class="col-4" id="song_by_id" x-data="{
-            responsedata: null,
-            async get_kpop_song_by_id(id) {
-                this.responsedata = await (await fetch(http://localhost:8000/kpop/{id})).json();
-            }
-        }">
-            <h2>Search song by id</h2>
+            <div>
+                <h2>Random Kpop Song</h2>
 
-            <form>
-                <div class="mb-3 mx-3">
-                    <input class="form-control" id="idInput" name="id">
+                <button type="button" class="btn btn-primary" x-on:click="get_random_kpop_song()">Random Kpop Song</button>
+
+                <div class="card">
+                    <div class="card-header">
+                        Song:
+                        <div class=" bold" x-text="responsedata.song">Placeholder</div>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Artist: <div class=" bold" x-text="responsedata.artist">Placeholder</div>
+                        </li>
+                        <li class="list-group-item">Album: <div class=" bold" x-text="responsedata.album">Placeholder</div>
+                        </li>
+                        <li class="list-group-item">Release date: <div class=" bold" x-text="responsedata.release_date">Placeholder</div>
+                        </li>
+                    </ul>
                 </div>
-                <button type="submit" class="btn btn-primary" x-on:click="get_kpop_song_by_id()">Submit</button>
-            </form>
-
-            <div class="return_data">
-                Song: <strong x-text="responsedata.song">Placeholder</strong>
             </div>
+        </div>
+
+
+        <div class="col-6" id="song_by_id" x-data="{
+            responsedata: null,
+            id: null,
+            requestSongId: null,
+            async get_kpop_song_by_id() {
+                
+                // Build the link for the GET Request
+                url = 'http://localhost:8000/kpop/';
+                id = this.requestSongId;
+                finalUrl = url + id
+                
+                // Execute GET Request if id is not empty
+                if(id != null && id != ''){
+                    this.responsedata = await (await fetch(finalUrl)).json();
+                
+                    // When album and / or release_date aren't defined, make them default 'Unknown'
+                    if(this.responsedata.album == null){
+                        this.responsedata.album = 'Unknown';
+                        console.log(this.requestSongId);
+                    };
+                
+                    if(this.responsedata.release_date == null){
+                        this.responsedata.release_date = 'Unknown';
+                    };
+                
+                    // If an error occurs, display it in the song field
+                    if(this.responsedata.error){
+                        this.responsedata.album = null;
+                        this.responsedata.release_date = null;
+                        this.responsedata.song = this.responsedata.error;
+                    }
+                }
+                else {
+                    // Make sure the values are empty if no id has been given
+                    this.responsedata.song = null;
+                    this.responsedata.artist = null;
+                    this.responsedata.album = null;
+                    this.responsedata.release_date = null;
+                }
+            }
+        }">
+            <div>
+                <h2>Search song by id</h2>
+
+                <div class="mb-3 mx-3">
+                    <input x-model="requestSongId" class="form-control" id="idInput" name="id">
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        Song:
+                        <div class=" bold" x-text="responsedata.song">Placeholder</div>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Artist: <div class=" bold" x-text="responsedata.artist">Placeholder</div>
+                        </li>
+                        <li class="list-group-item">Album: <div class=" bold" x-text="responsedata.album">Placeholder</div>
+                        </li>
+                        <li class="list-group-item">Release date: <div class=" bold" x-text="responsedata.release_date">Placeholder</div>
+                        </li>
+                    </ul>
+                </div>
+
+                <button type="submit" class=" mt-2 btn btn-primary" x-on:click="get_kpop_song_by_id()">Submit</button>
+
+            </div>
+        </div>
+
+
+
+        <div class="col-12" id="post_song" x-data="{
+            responsedata: null,
+            songName: null,
+            artistName: null,
+            albumName: null,
+            releaseDate: null,
+            async create_kpop_song() {
+                                                                
+                // Check if the required fields 'songName' and 'artistName' are not empty
+                if(this.songName != null && this.songName != '' && this.artistName != null && this.artistName != ''){
+                                                                  
+                                                
+                    this.responsedata = await (await fetch('http://localhost:8000/kpop/', 
+                    {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        song: this.songName,
+                        artist: this.artistName,
+                        album: this.albumName,
+                        release_date: this.releaseDate,
+                   }),
+                   headers: {
+                       'Content-type': 'application/json; charset=UTF-8',
+                   },
+                   })).json();
+                
+                   console.log(this.responsedata);
+                   
+                   alert('Song successfully added to database');
+                }
+                else {
+                    alert('Fill in at least a song and an artist!');
+                }
+            }
+        }" />
+
+        <div>
+
+            <h2>Add a Kpop Song to the database</h2>
+            <h5>Fill in at least a song and an artist</h3>
+
+                <div class="card no-max-width">
+                    <div class="card-header">
+                        <input placeholder="Song" x-model="songName" class="form-control" id="songInput">
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <input placeholder="Artist" x-model="artistName" class="form-control" id="artistInput">
+                        </li>
+                        <li class="list-group-item">
+                            <input placeholder="Album" x-model="albumName" class="form-control" id="albumInput">
+                        </li>
+                        <li class="list-group-item">
+                            <input placeholder="Release Date" x-model="releaseDate" class="form-control" id="releaseDateInput">
+                        </li>
+                    </ul>
+                </div>
+                <button type="submit" class=" mt-2 btn btn-primary" x-on:click="create_kpop_song()">Submit</button>
         </div>
     </div>
+
+
+    </div>
+
 
 </body>
 

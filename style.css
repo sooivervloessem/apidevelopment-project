@@ -37,6 +37,51 @@ h1 {
     color: black;
 }
 
-div {}
+div#random_song,
+div#song_by_id,
+div#post_song {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
 
-div.return_data {}
+div#post_song {
+    margin-top: 75px;
+}
+
+.card {
+    margin-top: 10px;
+    width: 100%;
+    height: auto;
+    max-width: 300px;
+    border-color: #DEE2FF;
+    box-shadow: 0px 0px 5px black;
+}
+
+.card-header {
+    background-color: #a1afc8;
+}
+
+.list-group-item {
+    background-color: #a1afc8;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.inline {
+    display: inline;
+}
+
+.form-control,
+.form-control:focus {
+    background-color: #a1afc9;
+    border-color: DEE2FF;
+    text-align: center;
+    color: white;
+}
+
+.no-max-width {
+    max-width: none;
+}

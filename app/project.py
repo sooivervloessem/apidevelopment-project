@@ -39,6 +39,24 @@ kpop_songs = {"0": {
         "artist": "IVE",
         "album": "After Like",
         "release_date": "2022"
+    },
+    "2": {
+        "song": "Case 143",
+        "artist": "Stray Kids",
+        "album": "Maxident",
+        "release_date": "2022"
+    },
+    "3": {
+        "song": "#Twenty",
+        "artist": "Itzy",
+        "album": "Crazy in Love",
+        "release_date": "2021"
+    },
+    "4": {
+        "song": "Polaroid Love",
+        "artist": "Enhypen",
+        "album": "Dimension: Answer",
+        "release_date": "2022"
     }
 }
 
@@ -59,9 +77,9 @@ async def get_random_kpop_song():
 
 @app.get("/kpop/{id}")
 async def get_kpop_song_by_id(id: int):
-    # async def get_kpop_song_by_id(*, id: int = Path(title="The ID of the song to get", ge=0, lt=len(kpop_songs))):
     if id >= len(kpop_songs):
-        return {'error': 'There is no song matching that id.'}
+        error_string = "Id must be less than or equal to " + str(len(kpop_songs)-1)
+        return {'error': error_string}
     if id < 0:
         return {'error': 'Id cannot be less than 0.'}
     return kpop_songs[str(id)]
