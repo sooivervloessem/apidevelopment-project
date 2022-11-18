@@ -45,10 +45,6 @@ div#post_song {
     flex-wrap: wrap;
 }
 
-div#post_song {
-    margin-top: 75px;
-}
-
 .card {
     margin-top: 10px;
     width: 100%;
