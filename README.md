@@ -8,15 +8,15 @@ Ik heb voor het thema 'Kpop' gekozen, aangezien dit mijn favoriet muziekgenre is
 [Hosted API link](https://project-service-sooivervloessem.cloud.okteto.net/)
 
 ## API functionaliteit van de back-end
-![Image Backend Setup](/images_readme/setup_backend.png)
+![Image Backend Setup](/images_readme/setup_backend.png)  
 Op bovenstaande afbeelding wordt de API geïnitialiseerd.
 CORS wordt toegepast.
 Ook wordt er een klasse 'KpopSong' aangemaakt. Deze bevat de structuur voor een Kpop song.
 
-![Image kpop_songs](/images_readme/kpop_song_list_backend.png)
+![Image kpop_songs](/images_readme/kpop_song_list_backend.png)  
 Hierboven wordt een dictionary 'kpop_songs' aangemaakt. Deze bevat al enkele Kpop songs om van te starten.
 
-![Image methods_backend](/images_readme/get_post_method_backend.png)
+![Image methods_backend](/images_readme/get_post_method_backend.png)  
 Er zijn 3 GET en 1 POST method ingesteld voor de API.
 
 ### get_kpop_songs()
